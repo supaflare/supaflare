@@ -29,11 +29,17 @@
 			<div>
 				<n-form ref="formRef" class="centered-form" :model="model" :rules="rules">
 					<n-form-item path="url" label="URL">
-						<n-input v-model:value="model.url" placeholder="Enter URL" />
+						<n-input
+							v-model:value="model.url_raw"
+							class="url-input"
+							pair
+							separator="://"
+							:placeholder="['Protocol', 'Web Address']"
+						></n-input>
 					</n-form-item>
 					<n-row>
 						<n-form-item path="slug" label="Slug" style="flex-grow: 1">
-							<n-input v-model:value="model.slug" placeholder="Enter Slug" />
+							<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
 						</n-form-item>
 						<n-form-item>
 							<n-button type="warning" style="margin-left: 20px" @click="handleGenerateSlug">
@@ -47,17 +53,29 @@
 						</n-form-item>
 					</n-row>
 					<n-form-item path="android_url" label="Android URL" style="flex-grow: 1">
-						<n-input v-model:value="model.android_url" placeholder="Enter Android URL" />
+						<n-input
+							v-model:value="model.android_url_raw"
+							class="url-input"
+							pair
+							separator="://"
+							:placeholder="['Protocol', 'Web Address']"
+						></n-input>
 					</n-form-item>
 					<n-form-item path="ios_url" label="iOS URL" style="flex-grow: 1">
-						<n-input v-model:value="model.ios_url" placeholder="Enter iOS URL" />
+						<n-input
+							v-model:value="model.ios_url_raw"
+							class="url-input"
+							pair
+							separator="://"
+							:placeholder="['Protocol', 'Web Address']"
+						></n-input>
 					</n-form-item>
 				</n-form>
 			</div>
 			<template #footer>
 				<div>
 					<n-button type="primary" @click="handleSaveEdits">Update</n-button
-					><n-button style="margin-left: 20px">Cancel</n-button>
+					><n-button style="margin-left: 20px" @click="showEditModal = false">Cancel</n-button>
 				</div>
 			</template>
 		</n-modal>
@@ -65,16 +83,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted, h } from 'vue';
+import { defineComponent, ref, reactive, onMounted, h, computed } from 'vue';
 import { fetchLinks, editLink, deleteLink } from '@/services/links';
 import { useMessage, useDialog, NDataTable, NButton, NModal, NForm, NFormItem, NInput, NIcon, NRow } from 'naive-ui';
-import { Plus, Sync } from '@vicons/fa';
+import { Sync } from '@vicons/fa';
 import { useLinksStore } from '@/stores/linksStore';
 import { Link } from '@/types/global';
 import { customAlphabet } from 'nanoid';
 
 export default defineComponent({
-	components: { NDataTable, NModal, NButton, NForm, NFormItem, NInput, NIcon, NRow, Plus, Sync },
+	components: { NDataTable, NModal, NButton, NForm, NFormItem, NInput, NIcon, NRow, Sync },
 	setup() {
 		const messageDuration = 5000;
 		const linksStore = useLinksStore();
@@ -85,12 +103,23 @@ export default defineComponent({
 		const links = ref<Link[] | []>([]);
 		const showEditModal = ref(false);
 
-		const modelRef = ref({
-			id: '',
-			url: '',
+		const modelRef: any = ref({
+			url: computed(() => {
+				if (!modelRef.value.url_raw[0] && !modelRef.value.url_raw[1]) return '';
+				return modelRef.value.url_raw[0] + '://' + modelRef.value.url_raw[1];
+			}),
+			url_raw: ['', ''],
 			slug: '',
-			android_url: '',
-			ios_url: '',
+			android_url: computed(() => {
+				if (!modelRef.value.android_url_raw[0] && !modelRef.value.android_url_raw[1]) return '';
+				return modelRef.value.android_url_raw[0] + '://' + modelRef.value.android_url_raw[1];
+			}),
+			android_url_raw: ['', ''],
+			ios_url: computed(() => {
+				if (!modelRef.value.ios_url_raw[0] && !modelRef.value.ios_url_raw[1]) return '';
+				return modelRef.value.ios_url_raw[0] + '://' + modelRef.value.ios_url_raw[1];
+			}),
+			ios_url_raw: ['', ''],
 		});
 		const editRowRef = ref();
 
@@ -103,6 +132,8 @@ export default defineComponent({
 							return new Error('URL is required');
 						} else if (value.length > 2083) {
 							return new Error('URL has to be 2083 characters or below.');
+						} else if (String(value).startsWith('://')) {
+							return new Error('Please enter a protocol.');
 						}
 						return true;
 					},
@@ -124,8 +155,13 @@ export default defineComponent({
 			android_url: [
 				{
 					validator(rule: any, value: any) {
-						if (value && value.length > 2083) {
+						if (!value) {
+							return true;
+						}
+						if (value.length > 2083) {
 							return new Error('Android URL has to be 2083 characters or below.');
+						} else if (String(value).startsWith('://')) {
+							return new Error('Please enter a protocol.');
 						}
 						return true;
 					},
@@ -135,8 +171,13 @@ export default defineComponent({
 			ios_url: [
 				{
 					validator(rule: any, value: any) {
-						if (value && value.length > 2083) {
+						if (!value) {
+							return true;
+						}
+						if (value.length > 2083) {
 							return new Error('iOS URL has to be 2083 characters or below.');
+						} else if (String(value).startsWith('://')) {
+							return new Error('Please enter a protocol.');
 						}
 						return true;
 					},
@@ -186,7 +227,7 @@ export default defineComponent({
 			}
 		}
 
-		const columns = [
+		const columns: any = [
 			{
 				title: 'URL',
 				key: 'url',
@@ -204,6 +245,9 @@ export default defineComponent({
 			{
 				title: 'Slug',
 				key: 'slug',
+				render(row: any) {
+					return h('b', {}, { default: () => '/' + row.slug });
+				},
 			},
 			{
 				title: 'Android URL',
@@ -236,8 +280,9 @@ export default defineComponent({
 			{
 				title: 'Action',
 				key: 'actions',
+				width: '150px',
 				render(row: any) {
-					return [
+					return h('div', [
 						h(
 							NButton,
 							{
@@ -256,7 +301,7 @@ export default defineComponent({
 							},
 							{ default: () => 'Delete' }
 						),
-					];
+					]);
 				},
 			},
 		];
@@ -310,10 +355,27 @@ export default defineComponent({
 		function handleEditLink(row: any) {
 			editRowRef.value = row;
 			modelRef.value.id = row.id;
-			modelRef.value.url = row.url;
 			modelRef.value.slug = row.slug;
-			modelRef.value.android_url = row.meta.android_url;
-			modelRef.value.ios_url = row.meta.ios_url;
+
+			if (row.url) {
+				const fields = String(row.url).split('://');
+				modelRef.value.url_raw = [fields[0], fields.slice(1).join('://')];
+			} else {
+				modelRef.value.url_raw = ['', ''];
+			}
+			if (row.meta.android_url) {
+				const fields = String(row.meta.android_url).split('://');
+				modelRef.value.android_url_raw = [fields[0], fields.slice(1).join('://')];
+			} else {
+				modelRef.value.android_url_raw = ['', ''];
+			}
+			if (row.meta.ios_url) {
+				const fields = String(row.meta.ios_url).split('://');
+				modelRef.value.ios_url_raw = [fields[0], fields.slice(1).join('://')];
+			} else {
+				modelRef.value.ios_url_raw = ['', ''];
+			}
+
 			showEditModal.value = true;
 		}
 
@@ -327,7 +389,7 @@ export default defineComponent({
 					try {
 						await deleteLink(row);
 						linksStore.deleteLink(row);
-						links.value = links.value.filter(link => link.id !== row.id);
+						links.value = links.value.filter((link) => link.id !== row.id);
 					} catch (error) {
 						message.error('Error fetching links...', { duration: messageDuration });
 					}
@@ -359,12 +421,29 @@ export default defineComponent({
 
 <style scoped>
 .centered-view {
-	width: 700px;
+	/* width: 700px; */
 	margin: 0 auto;
 }
 
 .centered-form {
 	width: 500px;
 	margin: 0 auto;
+}
+
+.slug-input {
+	text-align: center;
+}
+
+.url-input :deep(.n-input-wrapper):first-child {
+	flex-grow: 0;
+	width: 80px;
+}
+
+.url-input :deep(.n-input-wrapper):first-child input {
+	text-align: right;
+}
+
+.url-input :deep(.n-input-wrapper):nth-child(3) input {
+	text-align: left;
 }
 </style>

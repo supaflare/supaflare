@@ -24,3 +24,13 @@ update
     using (auth.uid() = user_id);
 
 create policy "Users can only delete their own links." on links for delete using (auth.uid() = user_id);
+
+CREATE OR REPLACE FUNCTION update_modified_column()   
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;   
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON links FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();

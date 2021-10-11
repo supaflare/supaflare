@@ -13,7 +13,7 @@ const options = {
 };
 
 async function fetchLinks() {
-	const { data, error } = await supabase.from('links').select('*').order('id');
+	const { data, error } = await supabase.from('links').select('*').order('inserted_at', { ascending: false });
 	return { data, error };
 }
 
