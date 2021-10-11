@@ -1,0 +1,13 @@
+{
+  "name": "supaflare-monorepo",
+  "private": true,
+  "author": "ian <licitdev@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+		"./app",
+		"./worker"
+	],
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}
