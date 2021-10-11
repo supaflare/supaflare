@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "@supaflare/worker",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier .  --write",
+    "postinstall": "patch-package"
+  },
+  "author": "ian <licitdev@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.4.1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^1.24.0"
+  }
+}
