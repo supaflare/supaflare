@@ -9,7 +9,9 @@ addEventListener('fetch', async (event) => {
 	const { request } = event;
 	const { url } = request;
 
-	if (request.method === 'POST' && url.includes('/supaflare_cfw_update')) {
+	if (request.method === 'OPTIONS') {
+		return event.respondWith(handleOptions(request));
+	} else if (request.method === 'POST' && url.includes('/supaflare_cfw_update')) {
 		return event.respondWith(processUpdate(request));
 	} else {
 		return event.respondWith(processRedirect(request));
@@ -33,11 +35,16 @@ async function processUpdate(request) {
 			const { data, error } = await supabase.from('links').select('*').eq('id', requestData.link_id);
 			if (error) throw error;
 			if (data.length === 0) {
-				await SUPAFLARE.delete(requestData.link_id);
+				const linkData = await SUPAFLARE.get('links:slug/' + requestData.slug, { type: 'json' });
+				if(linkData && linkData.id === requestData.link_id){
+					await SUPAFLARE.delete('links:slug/' + requestData.slug);
+				}
 			} else {
 				await SUPAFLARE.put('links:slug/' + data[0].slug, JSON.stringify(data[0]));
 			}
-			return new Response('OK');
+			const response = new Response('OK');
+			response.headers.set('Access-Control-Allow-Origin', new URL(request.headers.get('origin')));
+			return response;
 		} catch (error) {
 			return new Response('Server Error.', {
 				status: 500,
@@ -65,5 +72,34 @@ async function processRedirect(request) {
 		} else {
 			return Response.redirect(linkData.url, 302);
 		}
+	}
+}
+
+const corsHeaders = {
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
+	'Access-Control-Max-Age': '86400',
+};
+
+function handleOptions(request) {
+	let headers = request.headers;
+	if (
+		headers.get('Origin') !== null &&
+		headers.get('Access-Control-Request-Method') !== null &&
+		headers.get('Access-Control-Request-Headers') !== null
+	) {
+		let respHeaders = {
+			...corsHeaders,
+			'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers'),
+		};
+		return new Response(null, {
+			headers: respHeaders,
+		});
+	} else {
+		return new Response(null, {
+			headers: {
+				Allow: 'GET, HEAD, POST, OPTIONS',
+			},
+		});
 	}
 }
