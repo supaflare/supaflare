@@ -1,0 +1,10 @@
+diff --git a/node_modules/cross-fetch/dist/browser-ponyfill.js b/node_modules/cross-fetch/dist/browser-ponyfill.js
+index f26eb09..c6ac00e 100644
+--- a/node_modules/cross-fetch/dist/browser-ponyfill.js
++++ b/node_modules/cross-fetch/dist/browser-ponyfill.js
+@@ -551,4 +551,4 @@ exports.fetch = ctx.fetch // To enable: import {fetch} from 'cross-fetch'
+ exports.Headers = ctx.Headers
+ exports.Request = ctx.Request
+ exports.Response = ctx.Response
+-module.exports = exports
++module.exports = fetch
