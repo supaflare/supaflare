@@ -6,12 +6,17 @@ Simple URL shortener / redirector service using [Supabase](https://supabase.io) 
 
 Redirect to a different URL depending on the device used when accessing the link, either from Android or iOS.
 
-## Demo ( [link](https://supaflare.licit.dev) )
+Launch your own instance using the free tiers of [Supabase](https://supabase.io/pricing) and [Cloudflare Workers](https://workers.cloudflare.com).
 
-1. Use Magic Link to login or sign in with GitHub.
-2. Create and manage your links!
+## Demo
+
+1. Visit [https://supaflare.licit.dev](https://supaflare.licit.dev).
+2. Use Magic Link to login or sign in with GitHub.
+3. Create and manage your links!
+4. Test your links at [https://out.licit.dev/](https://out.licit.dev/)`slug`
 
 ## Supabase Features Used
+
 ### Auth
 To provide authentication and segretation of data between different users.
 
@@ -20,6 +25,10 @@ To store redirection links and metadata.
 
 ### JS Library
 Convenient access to access the above Supabase features used.
+
+## Installation Instructions
+
+Article writing in progress. Coming soon!
 
 ##
 Developed by [@licitdev](https://github.com/licitdev)
