@@ -6,7 +6,7 @@ Simple URL shortener / redirector service using [Supabase](https://supabase.io) 
 
 Redirect to a different URL depending on the device used when accessing the link, either from Android or iOS.
 
-## Demo ( [link](http://supaflare.licit.dev) )
+## Demo ( [link](https://supaflare.licit.dev) )
 
 1. Use Magic Link to login or sign in with GitHub.
 2. Create and manage your links!
@@ -22,7 +22,4 @@ To store redirection links and metadata.
 Convenient access to access the above Supabase features used.
 
 ##
-Developed by [@licitdev](https://twitter.com/licitdev)
-
-
-
+Developed by [@licitdev](https://github.com/licitdev)
