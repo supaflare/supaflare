@@ -12,8 +12,13 @@ Launch your own instance using the free tiers of [Supabase](https://supabase.io/
 
 1. Visit [https://supaflare.licit.dev](https://supaflare.licit.dev).
 2. Use Magic Link to login or sign in with GitHub.
-3. Create and manage your links! URLs have to start with a protocol such as `https://` or `ftp://`.
-4. Test your links at [https://out.licit.dev/](https://out.licit.dev/)`slug`
+3. Create and manage your links!
+
+   > URLs have to start with a protocol such as `https://`, `ftp://`
+   > 
+   > Custom protocols are supported (eg: `tg://` opens the [Telegram](https://telegram.org) app).
+
+5. Test your links at [https://out.licit.dev/](https://out.licit.dev/)`slug`
 
 ## Supabase Features Used
 
