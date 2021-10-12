@@ -2,16 +2,17 @@
 
 ##
 
-Launch your own personal URL shortener / redirector service using free tiers of [Supabase](https://supabase.io) and [Cloudflare Workers](https://workers.cloudflare.com).
+Launch your own personal URL shortener / redirection service using free tiers of [Supabase](https://supabase.io), [Cloudflare Workers](https://workers.cloudflare.com) and [Cloudflare Pages](https://pages.cloudflare.com).
 
 ## Features
 
 - Redirection based on device type (Default / Android / iOS)
 - Support various URL protocols
+- Front-end web application for link management
 
 ## Demo
 
-1. Visit [https://supaflare.licit.dev](https://supaflare.licit.dev).
+1. Visit [https://supaflare.licit.dev](https://supaflare.licit.dev). Also accessible through [https://supaflare.pages.dev](https://supaflare.pages.dev).
 2. Use Magic Link to login or sign in with GitHub.
 3. Create and manage your links!
 
@@ -25,11 +26,11 @@ Launch your own personal URL shortener / redirector service using free tiers of 
 
 ### Auth
 
-To provide authentication and segretation of data between different users.
+Provide authentication and segretation of data between different users.
 
 ### Database
 
-To store redirection links and metadata.
+Store redirection links and metadata.
 
 ### JS Library
 
@@ -39,11 +40,15 @@ Convenient access to access the above Supabase features used.
 
 ### Cloudflare Workers
 
-To perform URL redirection and to update link data.
+Perform URL redirection and to update link data.
 
 ### Workers KV
 
-To read and store link data used when redirecting web requests.
+Read and store link data used when redirecting web requests.
+
+### Cloudflare Pages
+
+Host the front-end [Vue 3](https://v3.vuejs.org) web application.
 
 ## Installation Guide
 
