@@ -2,11 +2,12 @@
 
 ##
 
-Simple URL shortener / redirector service using [Supabase](https://supabase.io) and [Cloudflare Workers](https://workers.cloudflare.com).
+Launch your own personal URL shortener / redirector service using free tiers of [Supabase](https://supabase.io) and [Cloudflare Workers](https://workers.cloudflare.com).
 
-Redirect to a different URL depending on the device used when accessing the link, either from Android or iOS.
+## Features
 
-Launch your own instance using the free tiers of [Supabase](https://supabase.io/pricing) and [Cloudflare Workers](https://workers.cloudflare.com).
+- Redirection based on device type (Default / Android / iOS)
+- Support various URL protocols
 
 ## Demo
 
@@ -23,17 +24,44 @@ Launch your own instance using the free tiers of [Supabase](https://supabase.io/
 ## Supabase Features Used
 
 ### Auth
+
 To provide authentication and segretation of data between different users.
 
 ### Database
+
 To store redirection links and metadata.
 
 ### JS Library
+
 Convenient access to access the above Supabase features used.
 
-## Installation Instructions
+## Cloudflare Features Used
 
-Article writing in progress. Coming soon!
+### Cloudflare Workers
+
+To perform URL redirection and to update link data.
+
+### Workers KV
+
+To read and store link data used when redirecting web requests.
+
+## Installation Guide
+
+Coming soon!
+
+## Upcoming Features
+
+- Search & Filtering of Links
+- QR Code Display
+- Link Expiry Datetime
+- Password Protection
+- Country Redirect
+
+## TODO
+
+- [ ] Intallation Guide
+- [ ] Set up GitHub Actions
 
 ##
+
 Developed by [@licitdev](https://github.com/licitdev)
