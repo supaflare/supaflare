@@ -1,11 +1,10 @@
 name: Deploy to Cloudflare Workers
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
-      - feature/worker-deployment-action
-  workflow_dispatch:
 
 defaults:
   run:
