@@ -2,8 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 
 let SUPABASE_URL, SUPABASE_API_KEY;
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-
 addEventListener('fetch', async (event) => {
 	const { request } = event;
 	const { url } = request;
@@ -30,6 +28,7 @@ async function processUpdate(request) {
 			) {
 				throw Error;
 			}
+			const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
 			supabase.auth.setAuth(requestData.token);
 			const { data, error } = await supabase.from('links').select('*').eq('id', requestData.link_id);
 			if (error) throw error;
