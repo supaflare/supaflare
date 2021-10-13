@@ -185,6 +185,9 @@ export default defineComponent({
 						if (!value) {
 							return new Error('Slug is required');
 						}
+						if (value.length > 50) {
+							return new Error('Slug has to be 50 characters or below.');
+						}
 						return true;
 					},
 					trigger: ['input', 'blur'],
