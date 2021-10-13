@@ -7,12 +7,15 @@
 					v-model:value="model.url_raw"
 					class="url-input"
 					pair
+					clearable
 					separator="://"
 					:placeholder="['Protocol', 'Web Address']"
+					@change="handleUrlUpdate"
+					@update:value="handleUrlUpdate"
 				></n-input>
 			</n-form-item>
 			<n-row>
-				<n-form-item path="slug" label="Slug" style="flex-grow: 1">
+				<n-form-item ref="slugRef" path="slug" label="Slug" style="flex-grow: 1">
 					<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
 				</n-form-item>
 				<n-form-item>
@@ -31,8 +34,11 @@
 					v-model:value="model.android_url_raw"
 					class="url-input"
 					pair
+					clearable
 					separator="://"
 					:placeholder="['Protocol', 'Web Address']"
+					@change="handleAndroidUrlUpdate"
+					@update:value="handleAndroidUrlUpdate"
 				></n-input>
 			</n-form-item>
 			<n-form-item path="ios_url" label="iOS URL" style="flex-grow: 1">
@@ -40,8 +46,11 @@
 					v-model:value="model.ios_url_raw"
 					class="url-input"
 					pair
+					clearable
 					separator="://"
 					:placeholder="['Protocol', 'Web Address']"
+					@change="handleIosUrlUpdate"
+					@update:value="handleIosUrlUpdate"
 				></n-input>
 			</n-form-item>
 
@@ -72,6 +81,7 @@ export default defineComponent({
 	components: { NForm, NFormItem, NInput, NIcon, NButton, NRow, Plus, Sync },
 	setup() {
 		const formRef = ref();
+		const slugRef = ref();
 		const messageDuration = 5000;
 		const appStore = useAppStore();
 		const linksStore = useLinksStore();
@@ -163,6 +173,11 @@ export default defineComponent({
 
 		async function handleGenerateSlug() {
 			modelRef.value.slug = nanoid();
+			try {
+				await slugRef.value.validate();
+			} catch (error) {
+				return;
+			}
 		}
 
 		async function handleCreateLink() {
@@ -196,12 +211,74 @@ export default defineComponent({
 			modelRef.value.android_url_raw = ['', ''];
 			modelRef.value.ios_url_raw = ['', ''];
 		}
+
+		function handleUrlUpdate(val: any) {
+			if (String(val[0]).includes('://')) {
+				const splits = String(val[0]).split('://');
+				if (splits.length > 1) {
+					modelRef.value.url_raw[0] = splits[0];
+					modelRef.value.url_raw[1] = splits.slice(1).join('://');
+				}
+			}
+			else if (String(val[1]).includes('://')) {
+				const splits = String(val[1]).split('://');
+				if (splits.length > 1) {
+					if (!val[0] || val[0] === splits[0]) {
+						modelRef.value.url_raw[0] = splits[0];
+						modelRef.value.url_raw[1] = splits.slice(1).join('://');
+					}
+				}
+			}
+		}
+
+		function handleAndroidUrlUpdate(val: any) {
+			if (String(val[0]).includes('://')) {
+				const splits = String(val[0]).split('://');
+				if (splits.length > 1) {
+					modelRef.value.android_url_raw[0] = splits[0];
+					modelRef.value.android_url_raw[1] = splits.slice(1).join('://');
+				}
+			}
+			else if (String(val[1]).includes('://')) {
+				const splits = String(val[1]).split('://');
+				if (splits.length > 1) {
+					if (!val[0] || val[0] === splits[0]) {
+						modelRef.value.android_url_raw[0] = splits[0];
+						modelRef.value.android_url_raw[1] = splits.slice(1).join('://');
+					}
+				}
+			}
+		}
+
+		function handleIosUrlUpdate(val: any) {
+			if (String(val[0]).includes('://')) {
+				const splits = String(val[0]).split('://');
+				if (splits.length > 1) {
+					modelRef.value.ios_url_raw[0] = splits[0];
+					modelRef.value.ios_url_raw[1] = splits.slice(1).join('://');
+				}
+			}
+			else if (String(val[1]).includes('://')) {
+				const splits = String(val[1]).split('://');
+				if (splits.length > 1) {
+					if (!val[0] || val[0] === splits[0]) {
+						modelRef.value.ios_url_raw[0] = splits[0];
+						modelRef.value.ios_url_raw[1] = splits.slice(1).join('://');
+					}
+				}
+			}
+		}
+
 		return {
 			formRef,
+			slugRef,
 			model: modelRef,
 			rules,
 			handleGenerateSlug,
 			handleCreateLink,
+			handleUrlUpdate,
+			handleAndroidUrlUpdate,
+			handleIosUrlUpdate,
 		};
 	},
 });
