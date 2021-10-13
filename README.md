@@ -62,11 +62,6 @@ Coming soon!
 - Password Protection
 - Country Redirect
 
-## TODO
-
-- [ ] Intallation Guide
-- [ ] Set up GitHub Actions
-
 ##
 
 Developed by [@licitdev](https://github.com/licitdev)
