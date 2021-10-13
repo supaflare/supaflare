@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - feature/worker-deployment-action
   repository_dispatch:
 
 defaults:
