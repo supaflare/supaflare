@@ -1,0 +1,35 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+defaults:
+  run:
+    working-directory: worker
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Build & Deploy Worker
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+      - run: npm install
+      - name: Publish to Cloudflare Workers
+        uses: cloudflare/wrangler-action@1.3.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: 'worker'
+          secrets: |
+            SUPABASE_URL
+            SUPABASE_API_KEY
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}

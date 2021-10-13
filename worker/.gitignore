@@ -28,4 +28,3 @@ tmp
 .eslintcache
 dist
 worker
-wrangler.toml
