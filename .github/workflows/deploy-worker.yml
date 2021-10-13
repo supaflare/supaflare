@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - feature/worker-deployment-action
-  repository_dispatch:
+  workflow_dispatch:
 
 defaults:
   run:
