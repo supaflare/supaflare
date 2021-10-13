@@ -16,7 +16,10 @@
 			</n-form-item>
 			<n-row>
 				<n-form-item ref="slugRef" path="slug" label="Slug" style="flex-grow: 1">
-					<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
+					<n-input-group>
+						<n-input-group-label class="slug-input-inline">/</n-input-group-label>
+						<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
+					</n-input-group>
 				</n-form-item>
 				<n-form-item>
 					<n-button type="warning" style="margin-left: 20px" @click="handleGenerateSlug">
@@ -73,12 +76,12 @@ import { defineComponent, ref, computed } from 'vue';
 import { addLink } from '@/services/links';
 import { useAppStore } from '@/stores/appStore';
 import { useLinksStore } from '@/stores/linksStore';
-import { useMessage, NForm, NFormItem, NInput, NIcon, NButton, NRow } from 'naive-ui';
+import { useMessage, NForm, NFormItem, NInput, NInputGroup, NInputGroupLabel, NIcon, NButton, NRow } from 'naive-ui';
 import { Plus, Sync } from '@vicons/fa';
 import { customAlphabet } from 'nanoid';
 
 export default defineComponent({
-	components: { NForm, NFormItem, NInput, NIcon, NButton, NRow, Plus, Sync },
+	components: { NForm, NFormItem, NInput, NInputGroup, NInputGroupLabel, NIcon, NButton, NRow, Plus, Sync },
 	setup() {
 		const formRef = ref();
 		const slugRef = ref();
@@ -219,8 +222,7 @@ export default defineComponent({
 					modelRef.value.url_raw[0] = splits[0];
 					modelRef.value.url_raw[1] = splits.slice(1).join('://');
 				}
-			}
-			else if (String(val[1]).includes('://')) {
+			} else if (String(val[1]).includes('://')) {
 				const splits = String(val[1]).split('://');
 				if (splits.length > 1) {
 					if (!val[0] || val[0] === splits[0]) {
@@ -238,8 +240,7 @@ export default defineComponent({
 					modelRef.value.android_url_raw[0] = splits[0];
 					modelRef.value.android_url_raw[1] = splits.slice(1).join('://');
 				}
-			}
-			else if (String(val[1]).includes('://')) {
+			} else if (String(val[1]).includes('://')) {
 				const splits = String(val[1]).split('://');
 				if (splits.length > 1) {
 					if (!val[0] || val[0] === splits[0]) {
@@ -257,8 +258,7 @@ export default defineComponent({
 					modelRef.value.ios_url_raw[0] = splits[0];
 					modelRef.value.ios_url_raw[1] = splits.slice(1).join('://');
 				}
-			}
-			else if (String(val[1]).includes('://')) {
+			} else if (String(val[1]).includes('://')) {
 				const splits = String(val[1]).split('://');
 				if (splits.length > 1) {
 					if (!val[0] || val[0] === splits[0]) {
@@ -292,6 +292,11 @@ export default defineComponent({
 
 .slug-input {
 	text-align: center;
+}
+
+.slug-input-inline {
+	width: '33%';
+	text-align: 'right';
 }
 
 .url-input :deep(.n-input-wrapper):first-child {
