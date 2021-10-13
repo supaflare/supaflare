@@ -198,12 +198,12 @@ export default defineComponent({
 
 				linksStore.addLink(data);
 				resetForm();
-				message.success('Link successfully created!', { duration: messageDuration });
+				message.success('Link successfully updated!', { duration: messageDuration });
 			} catch (error: any) {
 				if (error.code == '23505') {
 					message.error('Slug already exists. Please change the slug.', { duration: messageDuration });
 				} else {
-					message.error('Error creating link...', { duration: messageDuration });
+					message.error('Error updating link...', { duration: messageDuration });
 				}
 			}
 		}
