@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = self['SUPABASE_URL'];
-const SUPABASE_API_KEY = self['SUPABASE_API_KEY'];
+const SUPABASE_URL = globalThis.SUPABASE_URL;
+const SUPABASE_API_KEY = globalThis.SUPABASE_API_KEY;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
