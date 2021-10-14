@@ -22,72 +22,78 @@
 				content: 'soft',
 				footer: 'soft',
 			}"
+			:closable="false"
+			:mask-closable="false"
 		>
 			<template #header>
 				<div>Edit Link</div>
 			</template>
 			<div>
-				<n-form ref="formRef" class="centered-form" :model="model" :rules="rules">
-					<n-form-item path="url" label="URL">
-						<n-input
-							v-model:value="model.url_raw"
-							class="url-input"
-							pair
-							clearable
-							separator="://"
-							:placeholder="['Protocol', 'Web Address']"
-							@change="handleUrlUpdate"
-							@update:value="handleUrlUpdate"
-						></n-input>
-					</n-form-item>
-					<n-row>
-						<n-form-item ref="slugRef" path="slug" label="Slug" style="flex-grow: 1">
-							<n-input-group>
-								<n-input-group-label class="slug-input-inline">/</n-input-group-label>
-								<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
-							</n-input-group>
+				<n-spin :show="showLoadingSpinner">
+					<n-form ref="formRef" class="centered-form" :model="model" :rules="rules">
+						<n-form-item path="url" label="URL">
+							<n-input
+								v-model:value="model.url_raw"
+								class="url-input"
+								pair
+								clearable
+								separator="://"
+								:placeholder="['Protocol', 'Web Address']"
+								@change="handleUrlUpdate"
+								@update:value="handleUrlUpdate"
+							></n-input>
 						</n-form-item>
-						<n-form-item>
-							<n-button type="warning" style="margin-left: 20px" @click="handleGenerateSlug">
-								<template #icon>
-									<n-icon>
-										<sync />
-									</n-icon>
-								</template>
-								Generate Slug
-							</n-button>
+						<n-row>
+							<n-form-item ref="slugRef" path="slug" label="Slug" style="flex-grow: 1">
+								<n-input-group>
+									<n-input-group-label class="slug-input-inline">/</n-input-group-label>
+									<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
+								</n-input-group>
+							</n-form-item>
+							<n-form-item>
+								<n-button type="warning" style="margin-left: 20px" @click="handleGenerateSlug">
+									<template #icon>
+										<n-icon>
+											<sync />
+										</n-icon>
+									</template>
+									Generate Slug
+								</n-button>
+							</n-form-item>
+						</n-row>
+						<n-form-item path="android_url" label="Android URL" style="flex-grow: 1">
+							<n-input
+								v-model:value="model.android_url_raw"
+								class="url-input"
+								pair
+								clearable
+								separator="://"
+								:placeholder="['Protocol', 'Web Address']"
+								@change="handleAndroidUrlUpdate"
+								@update:value="handleAndroidUrlUpdate"
+							></n-input>
 						</n-form-item>
-					</n-row>
-					<n-form-item path="android_url" label="Android URL" style="flex-grow: 1">
-						<n-input
-							v-model:value="model.android_url_raw"
-							class="url-input"
-							pair
-							clearable
-							separator="://"
-							:placeholder="['Protocol', 'Web Address']"
-							@change="handleAndroidUrlUpdate"
-							@update:value="handleAndroidUrlUpdate"
-						></n-input>
-					</n-form-item>
-					<n-form-item path="ios_url" label="iOS URL" style="flex-grow: 1">
-						<n-input
-							v-model:value="model.ios_url_raw"
-							class="url-input"
-							pair
-							clearable
-							separator="://"
-							:placeholder="['Protocol', 'Web Address']"
-							@change="handleIosUrlUpdate"
-							@update:value="handleIosUrlUpdate"
-						></n-input>
-					</n-form-item>
-				</n-form>
+						<n-form-item path="ios_url" label="iOS URL" style="flex-grow: 1">
+							<n-input
+								v-model:value="model.ios_url_raw"
+								class="url-input"
+								pair
+								clearable
+								separator="://"
+								:placeholder="['Protocol', 'Web Address']"
+								@change="handleIosUrlUpdate"
+								@update:value="handleIosUrlUpdate"
+							></n-input>
+						</n-form-item>
+					</n-form>
+				</n-spin>
 			</div>
 			<template #footer>
 				<div>
-					<n-button type="primary" @click="handleSaveEdits">Update</n-button
-					><n-button style="margin-left: 20px" @click="showEditModal = false">Cancel</n-button>
+					<n-button type="primary" :disabled="showLoadingSpinner" @click="handleSaveEdits">Update</n-button
+					><n-button style="margin-left: 20px" :disabled="showLoadingSpinner" @click="showEditModal = false"
+						>Cancel</n-button
+					>
 				</div>
 			</template>
 		</n-modal>
@@ -103,6 +109,7 @@ import {
 	NDataTable,
 	NButton,
 	NModal,
+	NSpin,
 	NForm,
 	NFormItem,
 	NInput,
@@ -120,6 +127,7 @@ export default defineComponent({
 	components: {
 		NDataTable,
 		NModal,
+		NSpin,
 		NButton,
 		NForm,
 		NFormItem,
@@ -136,10 +144,12 @@ export default defineComponent({
 		const linksStore = useLinksStore();
 		const message = useMessage();
 		const dialog = useDialog();
+		const formRef = ref();
 		const tableRef = ref();
 		const loadingRef = ref(true);
 		const links = ref<Link[] | []>([]);
 		const showEditModal = ref(false);
+		const showLoadingSpinner = ref(false);
 
 		const modelRef: any = ref({
 			url: computed(() => {
@@ -241,6 +251,12 @@ export default defineComponent({
 
 		async function handleSaveEdits() {
 			try {
+				await formRef.value.validate();
+			} catch (error) {
+				return;
+			}
+			try {
+				showLoadingSpinner.value = true;
 				const { error } = await editLink(editRowRef.value, {
 					url: modelRef.value.url,
 					slug: modelRef.value.slug,
@@ -270,6 +286,8 @@ export default defineComponent({
 				} else {
 					message.error('Error updating link...', { duration: messageDuration });
 				}
+			} finally {
+				showLoadingSpinner.value = false;
 			}
 		}
 
@@ -433,13 +451,16 @@ export default defineComponent({
 				negativeText: 'Cancel',
 				onPositiveClick: async () => {
 					try {
+						loadingRef.value = true;
 						await deleteLink(row);
 						linksStore.deleteLink(row);
 						links.value = links.value.filter((link) => link.id !== row.id);
 					} catch (error) {
 						message.error('Error fetching links...', { duration: messageDuration });
+					} finally {
+						loadingRef.value = false;
+						message.success('Link successfully deleted!');
 					}
-					message.success('Link successfully deleted!');
 				},
 				onNegativeClick: () => {
 					return;
@@ -503,6 +524,7 @@ export default defineComponent({
 
 		return {
 			slugRef,
+			formRef,
 			tableRef,
 			loadingRef,
 			rowKey,
@@ -512,6 +534,7 @@ export default defineComponent({
 			showEditModal,
 			model: modelRef,
 			rules,
+			showLoadingSpinner,
 			handleGenerateSlug,
 			handleEditLink,
 			handleSaveEdits,

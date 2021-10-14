@@ -1,73 +1,75 @@
 <template>
 	<admin-view>
 		<h1>Create Link</h1>
-		<n-form ref="formRef" class="centered-form" :model="model" :rules="rules">
-			<n-form-item path="url" label="URL">
-				<n-input
-					v-model:value="model.url_raw"
-					class="url-input"
-					pair
-					clearable
-					separator="://"
-					:placeholder="['Protocol', 'Web Address']"
-					@change="handleUrlUpdate"
-					@update:value="handleUrlUpdate"
-				></n-input>
-			</n-form-item>
-			<n-row>
-				<n-form-item ref="slugRef" path="slug" label="Slug" style="flex-grow: 1">
-					<n-input-group>
-						<n-input-group-label class="slug-input-inline">/</n-input-group-label>
-						<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
-					</n-input-group>
+		<n-spin :show="showLoadingSpinner">
+			<n-form ref="formRef" class="centered-form" :model="model" :rules="rules">
+				<n-form-item path="url" label="URL">
+					<n-input
+						v-model:value="model.url_raw"
+						class="url-input"
+						pair
+						clearable
+						separator="://"
+						:placeholder="['Protocol', 'Web Address']"
+						@change="handleUrlUpdate"
+						@update:value="handleUrlUpdate"
+					></n-input>
 				</n-form-item>
-				<n-form-item>
-					<n-button type="warning" style="margin-left: 20px" @click="handleGenerateSlug">
+				<n-row>
+					<n-form-item ref="slugRef" path="slug" label="Slug" style="flex-grow: 1">
+						<n-input-group>
+							<n-input-group-label class="slug-input-inline">/</n-input-group-label>
+							<n-input v-model:value="model.slug" class="slug-input" placeholder="Enter Slug" />
+						</n-input-group>
+					</n-form-item>
+					<n-form-item>
+						<n-button type="warning" style="margin-left: 20px" @click="handleGenerateSlug">
+							<template #icon>
+								<n-icon>
+									<sync />
+								</n-icon>
+							</template>
+							Generate Slug
+						</n-button>
+					</n-form-item>
+				</n-row>
+				<n-form-item path="android_url" label="Android URL" style="flex-grow: 1">
+					<n-input
+						v-model:value="model.android_url_raw"
+						class="url-input"
+						pair
+						clearable
+						separator="://"
+						:placeholder="['Protocol', 'Web Address']"
+						@change="handleAndroidUrlUpdate"
+						@update:value="handleAndroidUrlUpdate"
+					></n-input>
+				</n-form-item>
+				<n-form-item path="ios_url" label="iOS URL" style="flex-grow: 1">
+					<n-input
+						v-model:value="model.ios_url_raw"
+						class="url-input"
+						pair
+						clearable
+						separator="://"
+						:placeholder="['Protocol', 'Web Address']"
+						@change="handleIosUrlUpdate"
+						@update:value="handleIosUrlUpdate"
+					></n-input>
+				</n-form-item>
+
+				<div style="display: flex; justify-content: center">
+					<n-button round type="primary" :disabled="showLoadingSpinner" @click="handleCreateLink">
 						<template #icon>
 							<n-icon>
-								<sync />
+								<plus />
 							</n-icon>
 						</template>
-						Generate Slug
+						Create
 					</n-button>
-				</n-form-item>
-			</n-row>
-			<n-form-item path="android_url" label="Android URL" style="flex-grow: 1">
-				<n-input
-					v-model:value="model.android_url_raw"
-					class="url-input"
-					pair
-					clearable
-					separator="://"
-					:placeholder="['Protocol', 'Web Address']"
-					@change="handleAndroidUrlUpdate"
-					@update:value="handleAndroidUrlUpdate"
-				></n-input>
-			</n-form-item>
-			<n-form-item path="ios_url" label="iOS URL" style="flex-grow: 1">
-				<n-input
-					v-model:value="model.ios_url_raw"
-					class="url-input"
-					pair
-					clearable
-					separator="://"
-					:placeholder="['Protocol', 'Web Address']"
-					@change="handleIosUrlUpdate"
-					@update:value="handleIosUrlUpdate"
-				></n-input>
-			</n-form-item>
-
-			<div style="display: flex; justify-content: center">
-				<n-button round type="primary" @click="handleCreateLink">
-					<template #icon>
-						<n-icon>
-							<plus />
-						</n-icon>
-					</template>
-					Create
-				</n-button>
-			</div>
-		</n-form>
+				</div>
+			</n-form>
+		</n-spin>
 	</admin-view>
 </template>
 
@@ -76,13 +78,25 @@ import { defineComponent, ref, computed } from 'vue';
 import { addLink } from '@/services/links';
 import { useAppStore } from '@/stores/appStore';
 import { useLinksStore } from '@/stores/linksStore';
-import { useMessage, NForm, NFormItem, NInput, NInputGroup, NInputGroupLabel, NIcon, NButton, NRow } from 'naive-ui';
+import {
+	useMessage,
+	NSpin,
+	NForm,
+	NFormItem,
+	NInput,
+	NInputGroup,
+	NInputGroupLabel,
+	NIcon,
+	NButton,
+	NRow,
+} from 'naive-ui';
 import { Plus, Sync } from '@vicons/fa';
 import { customAlphabet } from 'nanoid';
 
 export default defineComponent({
-	components: { NForm, NFormItem, NInput, NInputGroup, NInputGroupLabel, NIcon, NButton, NRow, Plus, Sync },
+	components: { NSpin, NForm, NFormItem, NInput, NInputGroup, NInputGroupLabel, NIcon, NButton, NRow, Plus, Sync },
 	setup() {
+		const showLoadingSpinner = ref(false);
 		const formRef = ref();
 		const slugRef = ref();
 		const messageDuration = 5000;
@@ -188,6 +202,12 @@ export default defineComponent({
 
 		async function handleCreateLink() {
 			try {
+				await formRef.value.validate();
+			} catch (error) {
+				return;
+			}
+			try {
+				showLoadingSpinner.value = true;
 				const { data, error } = await addLink({
 					user_id: appStore.supabaseSession!.user!.id,
 					url: modelRef.value.url,
@@ -201,13 +221,15 @@ export default defineComponent({
 
 				linksStore.addLink(data);
 				resetForm();
-				message.success('Link successfully updated!', { duration: messageDuration });
+				message.success('Link successfully created!', { duration: messageDuration });
 			} catch (error: any) {
 				if (error.code == '23505') {
 					message.error('Slug already exists. Please change the slug.', { duration: messageDuration });
 				} else {
 					message.error('Error creating link...', { duration: messageDuration });
 				}
+			} finally {
+				showLoadingSpinner.value = false;
 			}
 		}
 
@@ -273,6 +295,7 @@ export default defineComponent({
 		}
 
 		return {
+			showLoadingSpinner,
 			formRef,
 			slugRef,
 			model: modelRef,
