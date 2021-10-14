@@ -19,4 +19,4 @@ jobs:
         uses: distributhor/workflow-webhook@v2
         env:
           webhook_url: ${{ secrets.CF_PAGES_MASTER_WEBHOOK_URL }}
-          webhook_secret: ""
+          webhook_secret: "no_secret_required"
