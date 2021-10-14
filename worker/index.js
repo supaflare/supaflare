@@ -1,7 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-let SUPABASE_URL, SUPABASE_API_KEY;
-
 addEventListener('fetch', async (event) => {
 	const { request } = event;
 	const { url } = request;
@@ -44,9 +42,11 @@ async function processUpdate(request) {
 			response.headers.set('Access-Control-Allow-Origin', new URL(request.headers.get('origin')));
 			return response;
 		} catch (error) {
-			return new Response('Server Error.', {
+			const response = new Response('Server Error.', {
 				status: 500,
 			});
+			response.headers.set('Access-Control-Allow-Origin', new URL(request.headers.get('origin')));
+			return response;
 		}
 	}
 	return new Response('Forbidden.', {
