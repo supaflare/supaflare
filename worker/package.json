@@ -17,6 +17,7 @@
     "prettier": "^2.4.1"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^1.24.0"
+    "@supabase/supabase-js": "^1.24.0",
+    "@tsndr/cloudflare-worker-jwt": "^1.1.3"
   }
 }

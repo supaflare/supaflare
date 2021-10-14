@@ -206,7 +206,7 @@ export default defineComponent({
 				if (error.code == '23505') {
 					message.error('Slug already exists. Please change the slug.', { duration: messageDuration });
 				} else {
-					message.error('Error updating link...', { duration: messageDuration });
+					message.error('Error creating link...', { duration: messageDuration });
 				}
 			}
 		}
