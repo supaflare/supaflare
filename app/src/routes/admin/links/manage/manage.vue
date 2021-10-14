@@ -450,22 +450,26 @@ export default defineComponent({
 				positiveText: 'Confirm',
 				negativeText: 'Cancel',
 				onPositiveClick: async () => {
-					try {
-						loadingRef.value = true;
-						await deleteLink(row);
-						linksStore.deleteLink(row);
-						links.value = links.value.filter((link) => link.id !== row.id);
-					} catch (error) {
-						message.error('Error fetching links...', { duration: messageDuration });
-					} finally {
-						loadingRef.value = false;
-						message.success('Link successfully deleted!');
-					}
+					performDeleteLink(row);
 				},
 				onNegativeClick: () => {
 					return;
 				},
 			});
+		}
+
+		async function performDeleteLink(row: any) {
+			try {
+				loadingRef.value = true;
+				await deleteLink(row);
+				linksStore.deleteLink(row);
+				links.value = links.value.filter((link) => link.id !== row.id);
+			} catch (error) {
+				message.error('Error deleting link...', { duration: messageDuration });
+			} finally {
+				loadingRef.value = false;
+				message.success('Link successfully deleted!');
+			}
 		}
 
 		function handleUrlUpdate(val: any) {
