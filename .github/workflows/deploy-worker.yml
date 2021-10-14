@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Workers
+name: Cloudflare Workers Deployment
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ defaults:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Build & Deploy Worker
+    name: Deploy Worker
     steps:
       - uses: actions/checkout@v2
       - name: Set Up Node.js

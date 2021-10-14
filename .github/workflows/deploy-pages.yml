@@ -1,0 +1,21 @@
+name: Cloudflare Pages Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Page
+    steps:
+      - name: Invoke Deploy Master Hook
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.CF_PAGES_MASTER_WEBHOOK_URL }}
