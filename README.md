@@ -103,9 +103,10 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
    7. `SUPAFLARE_ADMIN_KEY` with a random non-empty string, used as secret for manual updates.
 3. Click on the Actions tab, manually run the workflows.
 
-### Configure External OAuth Providers
+### Configure Supabase Auth
 
-Refer to the [auth guide](https://supabase.io/docs/guides/auth) provided by Supabase.
+Please set the Site URL in `Supabase Settings > Auth settings` to be the URL of your Cloudflare Pages site.
+For external OAuth providers, refer to the [auth guide](https://supabase.io/docs/guides/auth) provided by Supabase.
 
 ### Restrict Web Application Access
 
