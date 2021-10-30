@@ -100,6 +100,7 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
    4. `SUPABASE_API_KEY` with the **Project API key > anon / public**.
    5. `SUPABASE_JWT_SECRET` with the **Config > JWT Secret**.
    6. `SUPABASE_URL` with the **Config > URL**.
+   7. `SUPAFLARE_ADMIN_KEY` with a random non-empty string, used as secret for manual updates.
 3. Click on the Actions tab, manually run the workflows.
 
 ### Configure External OAuth Providers
