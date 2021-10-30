@@ -86,7 +86,7 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
 5. Create the following environment variables:
    1. `VITE_SUPABASE_KEY` with the **Project API key > anon / public**.
 	2. `VITE_SUPABASE_URL` with the **Config > URL**.
-	3. `VITE_SUPAFLARE_WORKER_URL` with `https://supaflare.<your workers subdomain>.workers.dev`.
+	3. `VITE_SUPAFLARE_WORKER_URL` with `https://supaflare-worker.<your workers subdomain>.workers.dev`.
 6. After the first build is completed, pause the Automatic git deployments.
 7. Add a new deploy hook, copy the **Deploy hook URL** somewhere, you will require it later.
 
