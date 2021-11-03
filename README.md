@@ -3,6 +3,12 @@
 
 ##
 
+[![GitHub license](https://img.shields.io/github/license/supaflare/supaflare.svg)](https://github.com/supaflare/supaflare/blob/master/LICENSE)
+![Cloudflare Pages Deployment](https://github.com/supaflare/supaflare/workflows/Cloudflare%20Pages%20Deployment/badge.svg)
+![Cloudflare Workers Deployment](https://github.com/supaflare/supaflare/workflows/Cloudflare%20Workers%20Deployment/badge.svg)
+
+## About
+
 Launch your own personal URL shortener / redirection service using free tiers of [Supabase](https://supabase.io), [Cloudflare Workers](https://workers.cloudflare.com), [Workers KV](https://developers.cloudflare.com/workers/runtime-apis/kv) and [Cloudflare Pages](https://pages.cloudflare.com).
 
 ## Features
