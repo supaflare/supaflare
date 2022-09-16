@@ -8,7 +8,7 @@
 	</n-config-provider>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue';
 import { NConfigProvider, NMessageProvider, NDialogProvider } from 'naive-ui';
 
