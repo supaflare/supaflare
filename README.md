@@ -87,14 +87,15 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
 
 1. [Sign up](https://dash.cloudflare.com/sign-up/pages) for a Cloudflare Pages account.
 2. Create a new project, selecting the fork of Supaflare in your GitHub account.
-3. Set the build output directory as `dist`.
-4. Set the root directory path as `app`.
-5. Create the following environment variables:
+3. Set the framework preset as `Vue`.
+4. Set the build output directory as `dist`.
+5. Set the root directory path as `app`.
+6. Create the following environment variables:
    1. `VITE_SUPABASE_KEY` with the **Project API key > anon / public**.
 	2. `VITE_SUPABASE_URL` with the **Config > URL**.
 	3. `VITE_SUPAFLARE_WORKER_URL` with `https://supaflare-worker.<your workers subdomain>.workers.dev`.
-6. After the first build is completed, pause the Automatic git deployments.
-7. Add a new deploy hook, copy the **Deploy hook URL** somewhere, you will require it later.
+7. After the first build is completed, pause the Automatic git deployments.
+8. Add a new deploy hook, copy the **Deploy hook URL** somewhere, you will require it later.
 
 ### Configure GitHub Actions
 
