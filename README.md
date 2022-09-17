@@ -1,4 +1,3 @@
-
 ![supaflare_white_bg](https://user-images.githubusercontent.com/26413686/136743018-6f8923a6-8a3c-44f0-b6ec-b970a9f30b94.png)
 
 ##
@@ -24,10 +23,10 @@ Launch your own personal URL shortener / redirection service using free tiers of
 3. Create and manage your links!
 
    > URLs have to start with a protocol such as `https://`, `ftp://`
-   > 
+   >
    > Custom protocols are supported (eg: `tg://` opens the [Telegram](https://telegram.org) app).
 
-5. Test your links at [https://out.licit.dev/](https://out.licit.dev/)`slug`
+4. Test your links at [https://out.licit.dev/](https://out.licit.dev/)`slug`
 
 ## Supabase Features Used
 
@@ -60,6 +59,7 @@ Host the front-end [Vue 3](https://v3.vuejs.org) web application.
 ## Installation Guide
 
 ### Fork Supaflare
+
 Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the deployments are pushed via GitHub Actions.
 
 ### Set up Cloudflare Workers
@@ -70,7 +70,7 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
 4. Head over to KV tab, add a new namespace called **SUPAFLARE**.
 5. Update the `id` found in [/worker/wrangler.toml](worker/wrangler.toml) with the one you have just created.
 6. Head over to [API Tokens](https://dash.cloudflare.com/profile/api-tokens) and create a new Custom API Token with Permission of "Account/Worker Scripts/Edit".
-7. Copy the **API Key** somewhere, you will require it later. 
+7. Copy the **API Key** somewhere, you will require it later.
 
 ### Set up Supabase
 
@@ -92,8 +92,8 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
 5. Set the root directory path as `app`.
 6. Create the following environment variables:
    1. `VITE_SUPABASE_KEY` with the **Project API key > anon / public**.
-	2. `VITE_SUPABASE_URL` with the **Config > URL**.
-	3. `VITE_SUPAFLARE_WORKER_URL` with `https://supaflare-worker.<your workers subdomain>.workers.dev`.
+   2. `VITE_SUPABASE_URL` with the **Config > URL**.
+   3. `VITE_SUPAFLARE_WORKER_URL` with `https://supaflare-worker.<your workers subdomain>.workers.dev`.
 7. After the first build is completed, pause the Automatic git deployments.
 8. Add a new deploy hook, copy the **Deploy hook URL** somewhere, you will require it later.
 
@@ -101,7 +101,7 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
 
 1. Open the forked GitHub project > Settings > Secrets.
 2. Create the following repository secrets:
-   1. `CF_ACCOUNT_ID` with the **Account ID**.
+   1. `CLOUDFLARE_ACCOUNT_ID` with the **Account ID**.
    2. `CF_API_TOKEN` with the **API Key**.
    3. `CF_PAGES_MASTER_WEBHOOK_URL` with the **Deploy hook URL**.
    4. `SUPABASE_API_KEY` with the **Project API key > anon / public**.
