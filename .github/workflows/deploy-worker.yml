@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - worker/**
+      - .github/workflows/deploy-worker.yml
 
 defaults:
   run:
