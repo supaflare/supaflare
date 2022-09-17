@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: "16.x"
       - run: npm install
+      - name: Add mask
+        run: |
+          echo "::add-mask::${{ secrets.MASK_WORKER_URL }}"
       - name: Publish to Cloudflare Workers
         uses: cloudflare/wrangler-action@2.0.0
         with:

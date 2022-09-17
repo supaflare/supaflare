@@ -108,6 +108,7 @@ Create a [Fork](https://github.com/supaflare/supaflare/fork) of Supaflare as the
    5. `SUPABASE_JWT_SECRET` with the **Config > JWT Secret**.
    6. `SUPABASE_URL` with the **Config > URL**.
    7. `SUPAFLARE_ADMIN_KEY` with a random non-empty string, used as secret for manual updates.
+   8. `MASK_WORKER_URL` with your worker hostname for masking. Eg: test.workers.dev
 3. Click on the Actions tab, manually run the workflows.
 
 ### Configure Supabase Auth
