@@ -8,7 +8,7 @@
     "./worker"
   ],
   "devDependencies": {
-    "lerna": "^4.0.0",
+    "lerna": "^5.1.6",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   },
